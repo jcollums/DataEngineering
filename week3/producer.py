@@ -65,7 +65,7 @@ if __name__ == '__main__':
     
     breadcrumbs = open('bcsample.json')
     breadcrumbs = json.load(breadcrumbs)
-    datum_id = 0
+    crumb_id = 0
 
     client_key = randint(0,100)
     counter = 0
@@ -73,13 +73,12 @@ if __name__ == '__main__':
 
     producer.init_transactions()
     producer.begin_transaction()
-    for datum in breadcrumbs:
-        datum_id += 1
+    for crumb in breadcrumbs:
+        crumb_id += 1
         record_key = str(randint(1,5))
-        datum['count'] = datum_id
+        crumb['count'] = crumb_id
         
-        datum_bytes = json.dumps(datum, indent=2).encode('utf-8')
-        record_value = datum_bytes
+        record_value = json.dumps(crumb).encode('utf-8')
         
         print(f"Client {client_key} Producing key {record_key}")
         producer.produce(topic, key=record_key, value=record_value, on_delivery=acked) 
